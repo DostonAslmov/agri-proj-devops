@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agri-app
+  labels:
+    app: agri-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agri-app
+  template:
+    metadata:
+      labels:
+        app: agri-app
+    spec:
+      containers:
+      - name: agri-app
+        image: dostonaslmov/agri-app:latest  # DockerHub profilingizga moslang
+        ports:
+        - containerPort: 5000
