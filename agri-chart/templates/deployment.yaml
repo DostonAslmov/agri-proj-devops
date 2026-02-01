@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: agri-app
-        image: dostonaslmov/agri-app:latest  # DockerHub profilingizga moslang
+        image: aslq/agri-app:latest  # DockerHub profilingizga moslang
         ports:
         - containerPort: 5000
