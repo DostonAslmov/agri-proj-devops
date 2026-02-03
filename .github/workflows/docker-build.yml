@@ -1,24 +1,35 @@
-name: Docker Build and Push
+name: Docker Build, Scan and Push
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-and-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Login to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        
-    - name: Build and push
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: aslq/agri-app:latest
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/agri-app:${{ github.sha }} .
+
+      # Xavfsizlikni tekshirish (Trivy Scan)
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ secrets.DOCKER_USERNAME }}/agri-app:${{ github.sha }}'
+          format: 'table'
+          exit-code: '0' # Agar 1 qilsangiz, xatolik topsa pipeline to'xtaydi
+          severity: 'CRITICAL,HIGH'
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker image
+        run: |
+          docker tag ${{ secrets.DOCKER_USERNAME }}/agri-app:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/agri-app:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/agri-app:latest
