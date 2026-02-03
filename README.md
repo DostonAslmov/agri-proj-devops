@@ -126,3 +126,35 @@ The following documentation provides visual proof of the project's adherence to 
 
 ---
 
+<img width="1267" height="583" alt="image" src="https://github.com/user-attachments/assets/e9af2f7f-feb1-469b-978c-e3e81283fe8e" />
+
+### **📊 Database Performance Monitoring (Redis DB)**
+
+To ensure the reliability and efficiency of the data layer, a dedicated monitoring panel was implemented to track the real-time performance of the **Redis Database**:
+
+* **Custom Metric Tracking**: This panel utilizes specialized **PromQL** queries to monitor the granular CPU consumption of the Redis pod (`redis-db-546fc88f6b-kk555`).
+* **Operational Visibility**: The graph visualizes the workload trends of the database layer, confirming stable resource utilization (ranging between 0.0015 and 0.0024 CPU units) during the application's runtime.
+* **Observability Proof**: The successful integration of this dashboard demonstrates that the monitoring stack (Prometheus & Grafana) is fully coupled with both the application and the supporting infrastructure.
+
+---
+
+<img width="1273" height="726" alt="image" src="https://github.com/user-attachments/assets/56199b21-4267-4c51-8b41-1fcfb47419aa" />
+
+### **🔍 Real-Time Application Observability (Live Logs)**
+
+To facilitate rapid debugging and monitor user activity, a centralized logging interface has been integrated using **Grafana Loki**:
+
+* **Live Stream Monitoring**: The panel captures real-time stdout/stderr streams directly from the running `agri-app` containers.
+* **Traffic Insight**: Operational logs provide immediate visibility into incoming requests, tracking successful interactions (HTTP 200) and identifying missing resources (HTTP 404) such as `favicon.ico`.
+* **Activity Validation**: The log entries, such as "Main page accessed," serve as definitive proof that the application logic is executing correctly and responding to cluster-wide traffic.
+* **Structured Parsing**: By filtering specifically for the `agri-app` label, we isolate application-level events from infrastructure noise, ensuring high-signal observability for developers.
+
+🖼️ Samples of Other Dashboards and Observability Tools
+
+<img width="1276" height="731" alt="image" src="https://github.com/user-attachments/assets/7b2e5aba-7484-4538-b74c-c7c0dcba2e93" />
+
+
+<img width="2559" height="539" alt="image" src="https://github.com/user-attachments/assets/7030236e-d284-4b81-9e38-47bd6a7f2a33" />
+
+
+<img width="2559" height="286" alt="image" src="https://github.com/user-attachments/assets/38a05b2e-7836-44c1-88c5-6dfd55747957" />
