@@ -1,120 +1,137 @@
-# 🌾 Agriculture Platform - DevOps Implementation
+# 🌾 Agriculture Platform - End-to-End DevOps Project
 
-This project demonstrates a complete, automated CI/CD pipeline and a comprehensive monitoring system for a containerized application.
+This project demonstrates a production-ready DevOps ecosystem, featuring a complete CI/CD pipeline, GitOps deployment strategy, and an advanced observability stack.
 
-## 🛠 Technology Stack
+## 🏗 System Architecture & Technologies
 
-* **Application Framework:** Python (Flask)
-* **Containerization:** Docker
-* **Orchestration:** Kubernetes (Minikube)
-* **CI/CD Pipeline:** GitHub Actions & ArgoCD
-* **Observability:** Prometheus, Grafana, and Loki (Loki-stack)
-
-## 🚀 CI/CD Workflow
-
-1. **Continuous Integration:** Upon pushing code to the `main` branch, a GitHub Action automatically builds the Docker image and pushes it to Docker Hub as `aslq/agri-app:latest`.
-2. **Continuous Deployment:** ArgoCD monitors the `agri-chart/templates` directory in the GitHub repository and automatically synchronizes the cluster state with the manifest files.
-3. **Deployment Architecture:** The application is deployed in the `default` namespace using the `agri-app` Deployment and exposed via the `agri-app-service` Service.
-
-## 📊 Monitoring & Observability
-
-A professional Grafana dashboard has been established to provide real-time insights into the project's health:
-
-* **Cluster Resource Usage:** High-level overview of CPU and Memory consumption across the entire cluster.
-* **Application Performance:** Granular monitoring of CPU and Memory specifically for the `agri-app` pods using PromQL.
-* **Centralized Logging:** Real-time application logs are aggregated and visualized using Loki.
-
-<img width="622" height="572" alt="image" src="https://github.com/user-attachments/assets/87d2e45a-4676-4489-abd5-98e93b4d72e1" />
-
-<img width="2559" height="1333" alt="image" src="https://github.com/user-attachments/assets/50861230-1ab3-46e0-9441-bb0ccfecbac5" />
-
-### **1. Project Structure and CI/CD Implementation**
-
-> **Screenshot: Project Directory Structure**
-> "The repository is organized with a clear separation of concerns. The `.github/workflows` directory manages automated build processes, while the `agri-chart/templates` folder contains the core Kubernetes manifests, including `deployment.yaml` and `service.yaml`."
+* **Backend:** Python Flask application.
+* **Database:** Redis (Key-Value store) for caching and data persistence.
+* **CI Pipeline:** GitHub Actions.
+* **GitOps / CD:** ArgoCD (Automated synchronization).
+* **Infrastructure:** Kubernetes (Minikube).
+* **Observability:** Prometheus, Grafana, and Loki (Loki-stack).
 
 ---
 
-### **2. ArgoCD Continuous Deployment**
+## 🔄 1. Continuous Integration (CI)
 
-> **Screenshot: ArgoCD Application Overview**
-> "ArgoCD maintains a 'Healthy' and 'Synced' state for the `agri-proj-new` application. It tracks the GitHub repository's `main` branch and ensures the live cluster state matches the defined manifests in `agri-chart/templates`."
+The CI pipeline is fully automated via GitHub Actions. Every commit triggers a build-test-push cycle.
 
-> **Screenshot: Resource Tree and Live Objects**
-> "The visual resource tree illustrates the successful deployment of the `agri-app-service` and the corresponding `agri-app` Deployment. This confirms that all network and compute resources are correctly provisioned within the Kubernetes cluster."
+* **Workflow:** The `docker-build.yml` workflow builds a Docker image and pushes it to Docker Hub as `aslq/agri-app:latest`.
+* **Verification:** The synchronized timestamps between GitHub Actions and Docker Hub confirm a successful integration.
 
----
-
-### **3. Monitoring and Observability (Grafana & Prometheus)**
-
-> **Screenshot: Professional Monitoring Dashboard**
-> "A centralized Grafana portal provides access to specialized dashboards, including the 'Agriculture Platform Professional Monitoring' suite. This environment allows for real-time tracking of Kubernetes pod metrics and system performance."
-
-> **Screenshot: Resource Usage Analytics**
-> "Custom PromQL queries are utilized to calculate precise resource consumption. By analyzing metrics like `container_cpu_usage_seconds_total`, the system provides accurate data on cluster-wide CPU and memory usage."
+> **[INSERT image_c59bdd.jpg HERE]**
+> *Caption: Verified integration between GitHub Actions and Docker Hub.*
 
 ---
 
-### **4. Centralized Logging (Loki)**
+## ☸️ 2. GitOps Deployment (CD)
 
-> **Screenshot: Live Application Logs**
-> "Integrated logging via Grafana Loki allows for high-velocity log aggregation. Developers can monitor live application streams to quickly identify and troubleshoot runtime events."
+We utilize **GitOps** principles where the Git repository is the single source of truth for the cluster state.
 
-> **Screenshot: Multi-Namespace Log Filtering**
-> "The logging system supports granular filtering across different namespaces, such as `argocd`, `monitoring`, and the `default/agri-app` production environment, ensuring comprehensive observability across the entire stack."
+* **ArgoCD Orchestration:** ArgoCD monitors the `agri-chart/templates` directory. Any change in the manifest files (e.g., adding `redis.yaml` or changing replicas) is automatically synchronized to the cluster.
+* **Traceability:** Every deployment is tracked in the **History & Rollback** section, providing 100% auditability and the ability to revert changes instantly.
 
-<img width="2559" height="1313" alt="image" src="https://github.com/user-attachments/assets/eb2aa151-4291-4993-acb0-8297ab7a55b2" />
-
-### **1. Repository Architecture & CI Configuration**
-
-> **Screenshot: Project Directory Structure**
-> "The project follows a standard cloud-native structure. The `.github/workflows` directory houses the `docker-build.yml` file for automated integration, while the `agri-chart/templates` folder contains the Kubernetes manifests—`deployment.yaml` and `service.yaml`—required for cluster orchestration."
+> **[INSERT image_c53342.png HERE]**
+> *Caption: ArgoCD Resource Tree showing Synced state for Application and Redis DB.*
 
 ---
 
-### **2. Continuous Deployment via ArgoCD**
+## 📊 3. Advanced Monitoring & Custom Metrics
 
-> **Screenshot: ArgoCD Application Status**
-> "The `agri-proj-new` application is successfully managed by ArgoCD, maintaining a **Healthy** and **Synced** status. It is configured to automatically track the `HEAD` of the GitHub repository and synchronize changes into the `default` namespace."
+The observability stack is configured to provide deep insights into the application and infrastructure.
 
-> **Screenshot: Live Resource Synchronization**
-> "The ArgoCD resource tree confirms the successful provisioning of live objects. This includes the `agri-app-service` (SVC) and the `agri-app` Deployment, which manages the active pods within the cluster."
+* **Real-time Metrics:** Using **PromQL**, we monitor granular data such as Cluster Memory (13.2%) and CPU Usage (0.72%).
+* **Custom Queries:** Metrics are pulled directly from the `agri-app` pods using specialized queries, ensuring the dashboard is tailored to this specific workload.
+* **Centralized Logging:** Application and system logs are aggregated via Grafana Loki, allowing for rapid troubleshooting across all namespaces.
 
----
-
-### **3. Advanced Monitoring & Resource Analytics**
-
-> **Screenshot: Cluster Performance Dashboard**
-> "Our comprehensive Grafana dashboard provides real-time visibility into cluster health. Key metrics such as **Cluster Memory Usage** (currently at 13.2%) and **Cluster CPU Usage** (currently at 0.72%) are visualized to ensure optimal resource allocation."
-
-> **Screenshot: PromQL Metric Validation**
-> "The monitoring system utilizes precise PromQL queries to aggregate data. By calculating the rate of change for counters like `container_cpu_usage_seconds_total`, we generate accurate performance trends for all containerized workloads."
+> **[INSERT image_163ca0.png HERE]**
+> *Caption: Professional Grafana Dashboard with real-time cluster metrics.*
 
 ---
 
-### **4. Centralized Observability & Logging**
+## 🛠 Installation & Access
 
-> **Screenshot: Integrated Logging with Loki**
-> "Real-time application logs are aggregated using Grafana Loki. This centralized logging system allows for rapid troubleshooting by streaming live events directly from the ArgoCD application controller and other system components."
+1. **Start Minikube:** `minikube start`.
+2. **Access App:** `kubectl port-forward svc/agri-app-service 8085:80`.
+3. **Access ArgoCD:** `kubectl port-forward svc/argocd-server -n argocd 8080:443`.
+4. **Access Grafana:** `kubectl port-forward svc/loki-stack-grafana -n monitoring 3001:80`.
 
-> **Screenshot: Namespace & App Filtering**
-> "The observability stack supports granular filtering, allowing users to pivot between logs for core system services (like `kube-system`) and application-specific logs for the `default/agri-app` environment."
+Loyihangizning barcha qismlari (CI, CD, Monitoring va Database) qanday tartibda joylashganini ko'rsatuvchi professional **Project Structure** bo'limi:
 
-<img width="2559" height="1424" alt="image" src="https://github.com/user-attachments/assets/d201717b-c5bd-4671-b68e-bac4510fb7e1" />
+---
 
-Agriculture Platform: Professional Monitoring Dashboard
-This high-level overview demonstrates the complete observability stack for the agri-app, integrating real-time metrics and logs into a single, unified view.
+## 📂 Project Directory Structure
 
-1. Full Dashboard Overview
-The comprehensive dashboard provides a "single pane of glass" view into the application's health, combining availability, resource consumption, and live execution logs.
+```text
+AgriChain_Project/
+├── .github/
+│   └── workflows/
+│       └── docker-build.yml      # CI pipeline: Builds & pushes Docker image to Hub
+├── agri-chart/                   # Helm-style Kubernetes manifest directory
+│   ├── templates/
+│   │   ├── deployment.yaml       # Main application deployment (agri-app)
+│   │   ├── service.yaml          # Load balancer/Service for the application
+│   │   ├── redis.yaml            # Database layer: Redis deployment & service
+│   │   └── _helpers.tpl          # Template helper functions for Kubernetes
+│   ├── Chart.yaml                # Metadata about the agri-chart
+│   └── values.yaml               # Configuration variables for the manifests
+├── app/
+│   ├── main.py                   # Python Flask application source code
+│   ├── requirements.txt          # Python dependencies
+│   └── Dockerfile                # Docker build instructions for the app
+└── README.md                     # Project documentation & screenshots
 
-Application Availability (Uptime): A discrete timeline tracking the operational status of the agri-app pod over time.
-Resource Utilization: Side-by-side graphs for CPU and Memory, allowing for quick correlation between performance spikes and resource limits.
-Live Application Logs: A bottom-panel stream powered by Loki, providing immediate context for the metrics shown above.
-2. Performance Metrics (CPU & Memory)
-CPU Usage (%): Tracks the processing power consumed by the application. The cleaned legend (right) identifies specific pods and system components, ensuring the agri-app is monitored without technical clutter.
-Memory Usage (MB): Provides a clear visualization of the application's memory footprint (approx. 42 MB). The simplified legend shows the specific pod instance (agri-app-6b7df5f68-z92nd), facilitating precise capacity planning.
-3. Log Aggregation (Loki)
-Live Application Logs: This panel captures and formats real-time logs directly from the container.
-Clean Formatting: Using the | json | line_format parser, raw JSON data is converted into human-readable text (e.g., tracking GET /update requests with 200 OK status).
-Incident Response: Critical warnings and errors are highlighted, enabling rapid debugging directly from the Grafana interface.
+```
+
+<img width="1280" height="285" alt="image" src="https://github.com/user-attachments/assets/cc305f3d-c5a9-4523-98d4-1463867bf21b" />
+
+<img width="554" height="481" alt="image" src="https://github.com/user-attachments/assets/c90826bd-2974-46fb-9784-fbcabafc5f49" />
+
+<img width="1280" height="379" alt="image" src="https://github.com/user-attachments/assets/081b1ea8-0829-425f-af4f-502df044b3d2" />
+
+---
+
+### **Project Technical Validation & Observability Overview**
+
+The following technical documentation provides a visual verification of the automated ecosystem implemented in this project. The integration demonstrates a seamless flow from code commit to cluster-wide observability:
+
+* **Automated CI Pipeline:** Every code change triggers a **GitHub Actions** workflow, successfully building and pushing the updated Docker image to **Docker Hub**.
+* **GitOps-Driven Deployment:** **ArgoCD** maintains a "Healthy" and "Synced" cluster state. The deployment history confirms that recent architectural updates—such as scaling the application and introducing a **Redis Database** layer—were automatically reconciled from the Git repository.
+* **Infrastructure Monitoring:** A centralized **Grafana** dashboard visualizes real-time performance metrics, showing critical data such as Cluster Memory usage (13.2%) and CPU consumption (0.72%).
+* **Centralized Logging Stack:** Utilizing **Loki**, the system aggregates logs across all namespaces (ArgoCD, Kube-System, and Monitoring), providing granular visibility into the behavior of the `agri-app` and supporting infrastructure.
+
+---
+
+<img width="1280" height="96" alt="image" src="https://github.com/user-attachments/assets/a3f65f2e-4370-4cd7-b1db-68d3b7c2c84e" />
+
+<img width="571" height="492" alt="image" src="https://github.com/user-attachments/assets/cb6544ff-a0d0-4a21-b641-d6ee4e30757c" />
+
+<img width="1280" height="513" alt="image" src="https://github.com/user-attachments/assets/24812741-4ee5-444e-ba2a-67938b6146bf" />
+
+---
+
+### **Project Implementation & Technical Validation**
+
+The following documentation provides visual proof of the project's adherence to modern DevOps standards, specifically addressing CI/CD automation, GitOps workflows, and deep system observability.
+
+#### **1. Automated Continuous Integration (CI)**
+
+* **Pipeline Execution**: Every code push to the `main` branch triggers an automated **GitHub Actions** workflow.
+* **Build & Push Validation**: The CI pipeline successfully builds the application into a Docker container and pushes it to **Docker Hub**.
+* **Artifact Consistency**: Timestamps and commit hashes (e.g., `55bd670`) across GitHub and Docker Hub confirm that the image tagged as `latest` is always up-to-date with the source code.
+
+#### **2. Declarative GitOps Deployment (CD)**
+
+* **ArgoCD Orchestration**: Deployment is managed via **ArgoCD**, ensuring the cluster state is always "Synced" with the Kubernetes manifests in the repository.
+* **Database Integration**: To provide a complete environment, a **Redis Database** layer was introduced via `redis.yaml`, appearing as a healthy deployment in the resource tree.
+* **Auditability**: The **History and Rollback** feature tracks every architectural change (such as scaling replicas or adding services), allowing for instant recovery and 100% traceability of cluster modifications.
+
+#### **3. Full-Stack Observability & Monitoring**
+
+* **Infrastructure Metrics**: A professional **Grafana** dashboard provides real-time visualization of cluster health, including precise tracking of **Cluster Memory usage (13.2%)** and **Cluster CPU usage (0.72%)**.
+* **Granular Performance Tracking**: Custom **PromQL** queries are utilized to monitor pod-level CPU and memory consumption, ensuring resource efficiency for the `agri-app` services.
+* **Centralized Logging**: Using **Grafana Loki**, logs are aggregated from multiple namespaces—including `argocd`, `monitoring`, and `kube-system`—providing a unified interface for debugging and auditing the entire platform.
+
+---
+
