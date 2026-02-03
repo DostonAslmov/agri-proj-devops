@@ -20,9 +20,6 @@ The CI pipeline is fully automated via GitHub Actions. Every commit triggers a b
 * **Workflow:** The `docker-build.yml` workflow builds a Docker image and pushes it to Docker Hub as `aslq/agri-app:latest`.
 * **Verification:** The synchronized timestamps between GitHub Actions and Docker Hub confirm a successful integration.
 
-> **[INSERT image_c59bdd.jpg HERE]**
-> *Caption: Verified integration between GitHub Actions and Docker Hub.*
-
 ---
 
 ## ☸️ 2. GitOps Deployment (CD)
@@ -31,9 +28,6 @@ We utilize **GitOps** principles where the Git repository is the single source o
 
 * **ArgoCD Orchestration:** ArgoCD monitors the `agri-chart/templates` directory. Any change in the manifest files (e.g., adding `redis.yaml` or changing replicas) is automatically synchronized to the cluster.
 * **Traceability:** Every deployment is tracked in the **History & Rollback** section, providing 100% auditability and the ability to revert changes instantly.
-
-> **[INSERT image_c53342.png HERE]**
-> *Caption: ArgoCD Resource Tree showing Synced state for Application and Redis DB.*
 
 ---
 
@@ -44,9 +38,6 @@ The observability stack is configured to provide deep insights into the applicat
 * **Real-time Metrics:** Using **PromQL**, we monitor granular data such as Cluster Memory (13.2%) and CPU Usage (0.72%).
 * **Custom Queries:** Metrics are pulled directly from the `agri-app` pods using specialized queries, ensuring the dashboard is tailored to this specific workload.
 * **Centralized Logging:** Application and system logs are aggregated via Grafana Loki, allowing for rapid troubleshooting across all namespaces.
-
-> **[INSERT image_163ca0.png HERE]**
-> *Caption: Professional Grafana Dashboard with real-time cluster metrics.*
 
 ---
 
